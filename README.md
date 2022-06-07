@@ -1,6 +1,6 @@
 # DACF
 DACF: Day-ahead Carbon Intensity Forecasting of Power Grids using Machine Learning. <br>
-[Link to paper]()
+(Refer DACF.pdf for the paperS)
 
 Version: 1.0 <br>
 Authors: Diptyaroop Maji, Ramesh K Sitaraman, Prashant Shenoy <br>
