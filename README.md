@@ -71,5 +71,5 @@ We welcome users to suggest modifications to improve CarbonCast and/or add new f
 If you use DACF, please consider citing our paper. The BibTex format is as follows: <br>
 ``` [To appear, e-Energy 2022] ```
 
-## 7. Acknowledgements
+## 6. Acknowledgements
 This work is part of the [CarbonFirst](http://carbonfirst.org/) project, supported by NSF grants 2105494, 2021693, and 2020888, and a grant from VMware.
