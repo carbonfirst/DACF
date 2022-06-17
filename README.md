@@ -7,12 +7,6 @@ Authors: Diptyaroop Maji, Ramesh K Sitaraman, Prashant Shenoy <br>
 Affiliation: University of Massachusetts, Amherst
 
 
-<!-- ## CarbonCast Architecture
-### First tier
-### Second Tier
-#### CarbonCastCNN
-#### CarbonCastLR -->
-
 ## 0. Citing DACF
 If you use DACF, please consider citing our paper. The BibTex format is as follows: <br>
 
@@ -67,7 +61,7 @@ For getting source production forecasts, run the following file:<br>
 ``` <example> ```<br>
 A detailed description of how to configure is given in Section 3.5 -->
 
-<!-- ### 3.5 Configuring CarbonCast:
+<!-- ### 3.5 Configuring DACF:
 Change the config.json file for desired configurations. Below are the fields used in the file along with their meaning:<br>
 PREDICTION_WINDOW_HOURS: Prediction window in hours. (Default: 24, for day-ahead forecasting) -->
 
@@ -75,7 +69,7 @@ PREDICTION_WINDOW_HOURS: Prediction window in hours. (Default: 24, for day-ahead
 
 ## 4. Developer mode
 
-We welcome users to suggest modifications to improve CarbonCast and/or add new features or models to the existing codebase. 
+We welcome users to suggest modifications to improve DACF and/or add new features or models to the existing codebase. 
 <!-- Use the developer branch to make edits and submit a change. -->
 
 ## 5. Acknowledgements
