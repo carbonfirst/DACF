@@ -1,6 +1,6 @@
 # DACF
 DACF: Day-ahead Carbon Intensity Forecasting of Power Grids using Machine Learning. <br>
-(Refer DACF.pdf for the paperS)
+(Refer <b>```DACF.pdf```</b> for the paper)
 
 Version: 1.0 <br>
 Authors: Diptyaroop Maji, Ramesh K Sitaraman, Prashant Shenoy <br>
@@ -12,6 +12,17 @@ Affiliation: University of Massachusetts, Amherst
 ### Second Tier
 #### CarbonCastCNN
 #### CarbonCastLR -->
+
+## 0. Citing DACF
+If you use DACF, please consider citing our paper. The BibTex format is as follows: <br>
+
+@inproceedings{maji2022dacf,<br>
+  title={DACF: Day-ahead Carbon Intensity Forecasting of Power Grids using Machine Learning},<br>
+  author={Maji, Diptyaroop and Sitaraman, Ramesh K and Shenoy, Prashant},<br>
+  booktitle={Proceedings of the Thirteenth ACM International Conference on Future Energy Systems},<br>
+  year={2022}<br>
+}<br>
+
 
 ## 1. Regions covered 
 * US: 
@@ -67,9 +78,5 @@ PREDICTION_WINDOW_HOURS: Prediction window in hours. (Default: 24, for day-ahead
 We welcome users to suggest modifications to improve CarbonCast and/or add new features or models to the existing codebase. 
 <!-- Use the developer branch to make edits and submit a change. -->
 
-## 5. Citing DACF
-If you use DACF, please consider citing our paper. The BibTex format is as follows: <br>
-``` [To appear, e-Energy 2022] ```
-
-## 6. Acknowledgements
+## 5. Acknowledgements
 This work is part of the [CarbonFirst](http://carbonfirst.org/) project, supported by NSF grants 2105494, 2021693, and 2020888, and a grant from VMware.
