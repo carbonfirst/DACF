@@ -32,28 +32,9 @@ OUT_FILE_NAME = None
 DAY_INTERVAL = 1
 MONTH_INTERVAL = 1
 
-# Lifecycle carbon emission factors
-#carbon rate used by electricityMap. Checkout this link:
-# https://github.com/tmrowco/electricitymap-contrib/blob/master/config/co2eq_parameters_lifecycle.json
-carbonRateLifecycle = {"coal": 820, "biomass": 230, "nat_gas": 490, "geothermal": 38, "hydro": 24,
-                "nuclear": 12, "oil": 650, "solar": 45, "unknown": 700, 
-                "other": 700, "wind": 11} # g/kWh
-forcast_carbonRateLifecycle = {"avg_coal_production_forecast": 820, "avg_biomass_production_forecast": 230, 
-                "avg_nat_gas_production_forecast": 490, "avg_geothermal_production_forecast": 38, 
-                "avg_hydro_production_forecast": 24, "avg_nuclear_production_forecast": 12, 
-                "avg_oil_production_forecast": 650, "avg_solar_production_forecast": 45, 
-                "avg_unknown_production_forecast": 700, "avg_other_production_forecast": 700, 
-                "avg_wind_production_forecast": 11} # g/kWh
-
-# carbonRate = {"coal": 820, "biomass": 230, "nat_gas": 490, "geothermal": 38, "hydro": 24,
-#                 "nuclear": 12, "oil": 650, "solar": 45, "unknown": 292.9, 
-#                 "other": 700, "wind": 11} # g/kWh  # SE
-# forcast_carbonRate = {"avg_coal_production_forecast": 820, "avg_biomass_production_forecast": 230, 
-#                 "avg_nat_gas_production_forecast": 490, "avg_geothermal_production_forecast": 38, 
-#                 "avg_hydro_production_forecast": 24, "avg_nuclear_production_forecast": 12, 
-#                 "avg_oil_production_forecast": 650, "avg_solar_production_forecast": 45, 
-#                 "avg_unknown_production_forecast": 292.9, "avg_other_production_forecast": 700, 
-#                 "avg_wind_production_forecast": 11} # SE
+# Operational carbon emission factors
+# Carbon rate used by electricityMap. Checkout this link:
+# https://github.com/electricitymap/electricitymap-contrib/blob/master/config/co2eq_parameters_direct.json
 
 # Median direct emission factors
 carbonRateDirect = {"coal": 760, "biomass": 0, "nat_gas": 370, "geothermal": 0, "hydro": 0,
@@ -69,17 +50,9 @@ forcast_carbonRateDirect = {"avg_coal_production_forecast": 760, "avg_biomass_pr
 
 
 def initialize(inFileName, startRow):
-    # load the new file
     print("FILE: ", inFileName)
     dataset = pd.read_csv(inFileName, header=0, infer_datetime_format=True, 
                             parse_dates=["UTC time"]) #, index_col=["Local time"]
-    # dataset.rename(columns={"NG": "net_generation", "NG: COL": "coal", "NG: NG": "nat_gas", 
-    #                         "NG: NUC": "nuclear", "NG: OIL": "oil", "NG: WAT": "hydro",
-    #                         "NG: SUN": "solar", "NG: WND": "wind", "NG: OTH": "other", 
-    #                         "NG: UNK": "unknown"}, inplace=True)
-    # numRows = 17544 #8784
-    # startRowOf2019 = startRow
-    # dataset = dataset.iloc[startRowOf2019:startRowOf2019+numRows, :]
     print(dataset.head(2))
     print(dataset.tail(2))
     dataset.replace(np.nan, 0, inplace=True) # replace NaN with 0.0
@@ -88,11 +61,6 @@ def initialize(inFileName, startRow):
     
     print(dataset.columns)
     print("UTC time", dataset["UTC time"].dtype)
-    # for i in range(1, len(dataset.columns.values)):
-    #     col = dataset.columns.values[i]
-    #     print(col, dataset[col].dtype)
-    #     dataset[col] = dataset[col].astype(np.float64)
-    #     print(col, dataset[col].dtype)
     return dataset
 
 def createHourlyTimeCol(dataset, datetime, startDate):
