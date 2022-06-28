@@ -1,21 +1,21 @@
 # DACF
 DACF: Day-ahead Carbon Intensity Forecasting of Power Grids using Machine Learning. <br>
-(Refer <b>```DACF.pdf```</b> for the paper)
+(Refer <b><i>```DACF.pdf```</i></b> for the paper)
 
-Version: 1.0 <br>
-Authors: Diptyaroop Maji, Ramesh K Sitaraman, Prashant Shenoy <br>
-Affiliation: University of Massachusetts, Amherst
+<b>Version:</b> 1.0 <br>
+<b>Authors:</b> Diptyaroop Maji, Ramesh K Sitaraman, Prashant Shenoy <br>
+<b>Affiliation:</b> University of Massachusetts, Amherst
 
 
 ## 0. Citing DACF
 If you use DACF, please consider citing our paper. The BibTex format is as follows: <br>
 
-@inproceedings{maji2022dacf,<br>
-  title={DACF: Day-ahead Carbon Intensity Forecasting of Power Grids using Machine Learning},<br>
-  author={Maji, Diptyaroop and Sitaraman, Ramesh K and Shenoy, Prashant},<br>
-  booktitle={Proceedings of the Thirteenth ACM International Conference on Future Energy Systems},<br>
-  year={2022}<br>
-}<br>
+&nbsp; &nbsp; &nbsp; &nbsp;@inproceedings{maji2022dacf,<br>
+&nbsp; &nbsp; &nbsp; &nbsp;  title={DACF: Day-ahead Carbon Intensity Forecasting of Power Grids using Machine Learning},<br>
+&nbsp; &nbsp; &nbsp; &nbsp;  author={Maji, Diptyaroop and Sitaraman, Ramesh K and Shenoy, Prashant},<br>
+&nbsp; &nbsp; &nbsp; &nbsp;  booktitle={Proceedings of the Thirteenth ACM International Conference on Future Energy Systems},<br>
+&nbsp; &nbsp; &nbsp; &nbsp;  year={2022}<br>
+&nbsp; &nbsp; &nbsp; &nbsp;}<br>
 
 
 ## 1. Regions covered 
@@ -44,7 +44,7 @@ Solar/Wind Forecasts:
 ### 3.1 Installing dependencies:
 DACF requires Python 3, Keras & Tensorflow 2.x <br>
 Other required packages:
-* Numpy, Pandas, MatplotLib, SKLearn, Pytz, Datetime
+* ```Numpy, Pandas, MatplotLib, SKLearn, Pytz, Datetime```
 <!-- * ``` pip3 install numpy, matplotlib, sklearn, datetime, matplotlib ``` -->
 
 <!-- ### 3.2 Getting Weather data:
@@ -56,27 +56,30 @@ The aggregated & cleaned weather forecasts that we have used for our regions are
 
 ### 3.2 Getting source production forecasts:
 For getting source production forecasts, run the following file:<br>
-```python3 sourceProductionForecast.py <region> <source>```<br>
-Example: ```python3 sourceProductionForecast.py CISO nat_gas```<br>
-Regions: CISO, PJM, ERCO, ISNE, SE, DE <br>
-Sources: coal, nat_gas, oil, solar, wind, hydro, unknown, geothermal, biomass, nuclear
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ```python3 sourceProductionForecast.py <region> <source>```<br>
+<b>Example:</b> ```python3 sourceProductionForecast.py CISO nat_gas```<br>
+<b>Regions:</b> <i>CISO, PJM, ERCO, ISNE, SE, DE</i> <br>
+<b>Sources:</b> <i>coal, nat_gas, oil, solar, wind, hydro, unknown, geothermal, biomass, nuclear</i>
 <!-- Note that you need to change the config.json file to get a particular source production forecast for a specific region. Example:
 ``` <example> ```<br>
 A detailed description of how to configure is given in Section 3.5 -->
 
-### 3.2 Calculating average carbon intensity:
+### 3.3 Calculating average carbon intensity:
 We use the following formula for calculating both real-time and forecasted avg carbon intensity:<br>
-```<formula>```, where <br>
-E_i = Electricity produced by source i, when we are calculating real-time avg. carbon intensity, & day-ahead predicted
+<img src="images/ci_avg.png">    , where <br>
+<br>
+<i>CI<sub>avg</sub></i> = Average carbon intensity (real-time or forecast) of a region <br>
+<i>E<sub>i</sub></i> = Electricity produced by source i, when we are calculating real-time avg. carbon intensity, & day-ahead predicted
 electricity produced by source i, when we are calculating day-ahead carbon intensity forecasts. <br>
-CR_i = Median operational (direct) carbon emission rate (also known as carbon emission factor) of source i. <br>
+<i>CR<sub>i</sub></i> = Median operational (direct) carbon emission rate (also known as carbon emission factor) of source i. <br>
 
 
 <!-- ### 3.6 Output (forecasts): -->
 
 ## 4. Developer mode
-
-We welcome users to suggest modifications to improve DACF and/or add new features or models to the existing codebase. 
+DACF is a working prototype. However, we understand that it still needs a lot of improvements. We will be updating the codebase periodically
+to add new things (features, regions, improved models etc.). In addition to that, we welcome users to suggest modifications 
+to improve DACF and/or add new features or models to the existing codebase. 
 <!-- Use the developer branch to make edits and submit a change. -->
 
 ## 5. Acknowledgements

@@ -104,25 +104,21 @@ def manipulateTestDataShape(data, slidingWindowLen, predictionWindowHours, isDat
 
 
 def trainANN(trainX, trainY, valX, valY, hyperParams):
-    n_timesteps, n_features, n_outputs = trainX.shape[1], trainX.shape[2], trainY.shape[1]
+    n_timesteps, n_features, nOutputs = trainX.shape[1], trainX.shape[2], trainY.shape[1]
     epochs = hyperParams['epoch']
     batchSize = hyperParams['batchsize']
-    kernelSize = hyperParams['kernel']
-    numFilters = hyperParams['filter']
     activationFunc = hyperParams['actv']
     lossFunc = hyperParams['loss']
     optimizer = hyperParams['optim']
-    poolSize = hyperParams['poolsize']
     hiddenDims = hyperParams['hidden']
-    hd = hiddenDims[0]
     learningRates = hyperParams['lr']
     model = Sequential()
     model.add(Flatten())
-    model.add(Dense(20, input_shape=(n_timesteps, n_features), activation='relu')) # 20 for coal, nat_gas, nuclear
-    model.add(Dense(50, activation='relu')) # 50 for coal, nat_gas, nuclear
-    model.add(Dense(n_outputs))
+    model.add(Dense(hiddenDims[0], input_shape=(n_timesteps, n_features), activation=activationFunc)) # 20 for coal, nat_gas, nuclear
+    model.add(Dense(hiddenDims[1], activation='relu')) # 50 for coal, nat_gas, nuclear
+    model.add(Dense(nOutputs))
 
-    opt = tf.keras.optimizers.Adam(learning_rate = 0.01)
+    opt = tf.keras.optimizers.Adam(learning_rate = learningRates)
     model.compile(loss=lossFunc, optimizer=optimizer[0],
                     metrics=['mean_absolute_error'])
     es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10)
@@ -178,16 +174,13 @@ def getForecasts(model, history, trainWindowHours, numFeatures):
 
 def getANNHyperParams():
     hyperParams = {}
-    hyperParams['epoch'] = 100 # DIP
-    hyperParams['batchsize'] = [10] # 10 for coal, nuclear, nat_gas
-    hyperParams['kernel'] = [3] #[3, 4, 5] #[3, 6, 10]
-    hyperParams['filter'] = [64] #, 32, 16] #[64, 32, 16]
-    hyperParams['poolsize'] = 2
+    hyperParams['epoch'] = 100 
+    hyperParams['batchsize'] = [10] 
     hyperParams['actv'] = "relu"
     hyperParams['loss'] = "mse"
     hyperParams['optim'] = ["adam"] #, "rmsprop"]
-    hyperParams['lr'] = [1e-2, 1e-3]
-    hyperParams['hidden'] = [[100, 100]] #, [50, 50]]#, [20, 50]] #, [50, 50]]
+    hyperParams['lr'] = 1e-2 #, 1e-3
+    hyperParams['hidden'] = [20, 50] #, [50, 50]]#, [20, 50]] #, [50, 50]]
     return hyperParams
 
 def runProgram(ISO, source):
@@ -234,22 +227,22 @@ def runProgram(ISO, source):
         #### Train - Jan - Dec 2019, Test - Jan - Jun 2020 ####
         if (period == 0):
             DATASET_LIMITER = 13128
-            OUT_FILE_SUFFIX = "h1_2020"
+            OUT_FILE_SUFFIX = "_h1_2020"
             NUM_TEST_DAYS = 182
         #### Train - Jan 2019 - Jun 2020, Test - Jul - Dec 2020 ####
         if (period == 1):
             DATASET_LIMITER = 17544
-            OUT_FILE_SUFFIX = "h2_2020"
+            OUT_FILE_SUFFIX = "_h2_2020"
             NUM_TEST_DAYS = 184
         #### Train - Jan 2020 - Dec 2020, Test - Jan - Jun 2021 ####
         if (period == 2):
             DATASET_LIMITER = 21888
-            OUT_FILE_SUFFIX = "h1_2021"
+            OUT_FILE_SUFFIX = "_h1_2021"
             NUM_TEST_DAYS = 181
         #### Train - Jan 2020 - Jun 2021, Test - Jul - Dec 2021 ####
         if (period == 3):
             DATASET_LIMITER = 26304
-            OUT_FILE_SUFFIX = "h2_2021"
+            OUT_FILE_SUFFIX = "_h2_2021"
             NUM_TEST_DAYS = 184
         ########################################################################
         
@@ -314,14 +307,13 @@ def runProgram(ISO, source):
         hyperParams = getANNHyperParams()
 
         for xx in range(NUMBER_OF_EXPERIMENTS):
-            OUT_FILE_NAME = OUT_FILE_NAME_PREFIX + "_" + featureList[0] + OUT_FILE_SUFFIX + ".csv"
-            print("\n[BESTMODEL] Starting training...")
+            OUT_FILE_NAME = OUT_FILE_NAME_PREFIX + "_" + featureList[0] + OUT_FILE_SUFFIX + "_expt_"+str(xx)+".csv"
+            print("\nStarting training (iteration ", str(xx), ")...")
             bestModel, numFeatures = trainANN(X, y, valX, valY, hyperParams)
             print("***** Training done *****")
             history = valData[-TRAINING_WINDOW_HOURS:, :].tolist()
             predictedData = getDayAheadForecasts(X, y, bestModel, history, testData, 
-                            TRAINING_WINDOW_HOURS, numFeatures, 0)
-            
+                            TRAINING_WINDOW_HOURS, numFeatures, 0)            
             actualData = manipulateTestDataShape(testData[:, 0], 
                     MODEL_SLIDING_WINDOW_LEN, PREDICTION_WINDOW_HOURS, False)
             formattedTestDates = manipulateTestDataShape(testDates, 
@@ -344,7 +336,6 @@ def runProgram(ISO, source):
                                         unscaledTestData, unScaledPredictedData)
             print("***** Forecast done *****")
             print("Overall RMSE score: ", rmseScore)
-            # print(scores)
             bestRMSE.append(rmseScore)
 
             data = []
@@ -359,8 +350,9 @@ def runProgram(ISO, source):
             
         print("Average RMSE after ", NUMBER_OF_EXPERIMENTS, " expts: ", np.mean(bestRMSE))
         print(bestRMSE)
-        periodRMSE.append(bestRMSE)
-        ######################## END #####################
+
+    periodRMSE.append(bestRMSE)
+    ######################## END #####################
 
     # actual = np.reshape(actualData, actualData.shape[0]*actualData.shape[1])
     # predicted = np.reshape(predictedData, predictedData.shape[0]*predictedData.shape[1])

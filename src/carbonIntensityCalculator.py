@@ -237,33 +237,6 @@ def aggregateHalfHourlyData(origDataset):
     print(len(modifiedDataset))
     return modifiedDataset
 
-def aggregate15MinDataDE(dataset):
-    dataList = []
-    col = dataset.columns.values
-    for i in range(0, len(dataset), 4):
-        tmpList = [None] * len(col)
-        tmpList[0] = dataset.iloc[i+3, 0]
-        for j in range(1, len(col)):
-            tmpList[j] = dataset.iloc[i, j] + dataset.iloc[i+1, j] + dataset.iloc[i+2, j] + dataset.iloc[i+3, j]
-        dataList.append(tmpList)
-    modifiedDataset = pd.DataFrame(dataList, columns=col)
-    return modifiedDataset
-
-def removeDuplicateDataDE(dataset):
-    print(len(dataset))
-    dataList = []
-    col = dataset.columns.values
-    i = 0
-    while (i<len(dataset)):
-        for j in range(48):
-            if(j<24):
-                tmpList = []
-                dataList.append(dataset.iloc[i+j])
-        i+=48
-    modifiedDataset = pd.DataFrame(dataList, columns=col)
-    return modifiedDataset
-
-
 idx=0
 CARBON_INTENSITY_COLUMN = 2
 ISO_LIST = ["ERCO"]
@@ -295,56 +268,7 @@ for iso in ISO_LIST:
     startRow = 0 #START_ROW[iso]
     dataset = initialize(IN_FILE_NAME, startRow)
 
-############### ZONE: DE start ###############
-    # # modifiedDataset = aggregate15MinDataDE(dataset)
-    # # modifiedDataset = removeDuplicateDataDE(dataset)
-    # # modifiedDataset = calculateCarbonIntensity(dataset, carbonRate)
-    # # modifiedDataset = calculateCarbonIntensityFromSourceForecasts(dataset, forcast_carbonRate, 3)
-    # dataset = dataset[13128:] # from July 1 2021
-    # dailyAvgMape, avgMape = getMape(dataset["UTC time"].values, dataset["carbon_intensity"].values, 
-    #                 dataset["carbon_from_src_forecasts"].values)
-    # for item in dailyAvgMape:
-    #     print(item)
-    # print("Mean MAPE: ", avgMape)
-    # print("Median MAPE: ", np.percentile(dailyAvgMape, 50))
-    # print("90th percentile MAPE: ", np.percentile(dailyAvgMape, 90))
-    # print("95th percentile MAPE: ", np.percentile(dailyAvgMape, 95))
-    # print("99th percentile MAPE: ", np.percentile(dailyAvgMape, 99))
-    # # modifiedDataset.to_csv(OUT_FILE_NAME)
-    # exit(0)
-############### ZONE: DE end ###############
 
-############### ZONE: SE start ###############
-    # # modifiedDataset = calculateCarbonIntensityFromSourceForecasts(dataset, forcast_carbonRate, 4)
-    # dataset = dataset[13128:] # from July 1 2021
-    # dailyAvgMape, avgMape = getMape(dataset["UTC time"].values, dataset["carbon_intensity"].values, 
-    #                 dataset["carbon_from_src_forecasts"].values)
-    # for item in dailyAvgMape:
-    #     print(item)
-    # print("Mean MAPE: ", avgMape)
-    # print("Median MAPE: ", np.percentile(dailyAvgMape, 50))
-    # print("90th percentile MAPE: ", np.percentile(dailyAvgMape, 90))
-    # print("95th percentile MAPE: ", np.percentile(dailyAvgMape, 95))
-    # print("99th percentile MAPE: ", np.percentile(dailyAvgMape, 99))
-    # # modifiedDataset.to_csv(OUT_FILE_NAME)
-    # exit(0)
-############### ZONE: SE end ###############
-
-############### ZONE: ERCO start ###############
-    # # modifiedDataset = calculateCarbonIntensityFromSourceForecasts(dataset, forcast_carbonRate, 4)
-    # dataset = dataset[13128:] # from July 1 2021
-    # dailyAvgMape, avgMape = getMape(dataset["UTC time"].values, dataset["carbon_intensity"].values, 
-    #                 dataset["carbon_from_src_forecasts"].values)
-    # for item in dailyAvgMape:
-    #     print(item)
-    # print("Mean MAPE: ", avgMape)
-    # print("Median MAPE: ", np.percentile(dailyAvgMape, 50))
-    # print("90th percentile MAPE: ", np.percentile(dailyAvgMape, 90))
-    # print("95th percentile MAPE: ", np.percentile(dailyAvgMape, 95))
-    # print("99th percentile MAPE: ", np.percentile(dailyAvgMape, 99))
-    # # modifiedDataset.to_csv(OUT_FILE_NAME)
-    # exit(0)
-############### ZONE: ERC end ###############
 
 
 
@@ -374,12 +298,9 @@ for iso in ISO_LIST:
     #     print("Calculating carbon intensity using direct emission factors...")
     #     dataset = calculateCarbonIntensity(dataset, carbonRateDirect, numSources)
 
-    if(emissionFactorType == "lifecycle"):
-        print("Calculating carbon intensity from forecasts using lifecycle emission factors...")
-        dataset = calculateCarbonIntensityFromSourceForecasts(dataset, forcast_carbonRateLifecycle, CARBON_INTENSITY_COLUMN)
-    else:
-        print("Calculating carbon intensity from forecasts using direct emission factors...")
-        dataset = calculateCarbonIntensityFromSourceForecasts(dataset, forcast_carbonRateDirect, CARBON_INTENSITY_COLUMN)
+    
+    print("Calculating carbon intensity from forecasts using direct emission factors...")
+    dataset = calculateCarbonIntensityFromSourceForecasts(dataset, forcast_carbonRateDirect, CARBON_INTENSITY_COLUMN)
 
     dailyAvgMape, avgMape = getMape(dataset["UTC time"].values, dataset["carbon_intensity"].values, 
                     dataset["carbon_from_src_forecasts"].values)
