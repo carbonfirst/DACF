@@ -71,8 +71,14 @@ We use the following formula for calculating both real-time and forecasted avg c
 <i>CI<sub>avg</sub></i> = Average carbon intensity (real-time or forecast) of a region <br>
 <i>E<sub>i</sub></i> = Electricity produced by source i, when we are calculating real-time avg. carbon intensity, & day-ahead predicted
 electricity produced by source i, when we are calculating day-ahead carbon intensity forecasts. <br>
-<i>CR<sub>i</sub></i> = Median operational (direct) carbon emission rate (also known as carbon emission factor) of source i. <br>
+<i>CR<sub>i</sub></i> = Median operational (direct) carbon emission rate (also known as carbon emission factor) of source i. <br><br>
 
+To calculate carbon intensity, run the following file:<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ```python3 carbonIntensityCalculateor.py <region> <f/r> <num_sources>```<br>
+<b>Example:</b> ```python3 carbonIntensityCalculateor.py CISO r 8```<br>
+<b>Regions:</b> <i>CISO, PJM, ERCO, ISNE, SE, DE</i> <br>
+<b><i>f</i> :</b> forecast (based on source production forecasts), <b><i>r</i> :</b> real-time (based on historical electricity production data)<br>
+<b>No. of sources producting electricity:</b> <i>CISO: 8, PJM: 8, ERCO: 7, ISNE: 8, SE: 4, DE: 10</i> <br>
 
 <!-- ### 3.6 Output (forecasts): -->
 
