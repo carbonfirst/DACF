@@ -345,7 +345,7 @@ def runProgram(ISO, source):
                 row.append(str(unscaledTestData[i]))
                 row.append(str(unScaledPredictedData[i]))
                 data.append(row)
-            utility.writeOutFile(OUT_FILE_NAME, data, featureList[0])
+            utility.writeOutFuelForecastFile(OUT_FILE_NAME, data, featureList[0])
 
             
         print("Average RMSE after ", NUMBER_OF_EXPERIMENTS, " expts: ", np.mean(bestRMSE))

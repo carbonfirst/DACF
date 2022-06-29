@@ -49,7 +49,7 @@ def getScores(scaledActual, scaledPredicted, unscaledActual, unscaledPredicted):
 
     return rmseScore, mapeScore
 
-def writeOutFile(outFileName, data, fuel):
+def writeOutFuelForecastFile(outFileName, data, fuel):
     print("Writing to ", outFileName, "...")
     fields = ["datetime", fuel+"_actual", "avg_"+fuel+"_production_forecast"]
     
@@ -156,21 +156,21 @@ def showModelSummary(history, model):
     print("***** Model summary shown *****")
     # list all data in history
     print(history.history.keys()) # ['loss', 'mean_absolute_error', 'val_loss', 'val_mean_absolute_error']
-    fig = plt.figure()
-    subplt1 = fig.add_subplot(2, 1, 1)
-    subplt1.plot(history.history['mean_absolute_error'])
-    subplt1.plot(history.history['val_mean_absolute_error'])
-    subplt1.legend(['train MAE', 'val_MAE'], loc="upper left")
-    # summarize history for loss
-    subplt2 = fig.add_subplot(2, 1, 2)
-    subplt2.plot(history.history['loss'])
-    subplt2.plot(history.history['val_loss'])
-    subplt2.legend(['train RMSE', 'val RMSE'], loc="upper left")
+    # fig = plt.figure()
+    # subplt1 = fig.add_subplot(2, 1, 1)
+    # subplt1.plot(history.history['mean_absolute_error'])
+    # subplt1.plot(history.history['val_mean_absolute_error'])
+    # subplt1.legend(['train MAE', 'val_MAE'], loc="upper left")
+    # # summarize history for loss
+    # subplt2 = fig.add_subplot(2, 1, 2)
+    # subplt2.plot(history.history['loss'])
+    # subplt2.plot(history.history['val_loss'])
+    # subplt2.legend(['train RMSE', 'val RMSE'], loc="upper left")
     
-    # plt.plot(history.history["loss"])
-    # plt.xlabel('epoch')
-    # plt.ylabel("RMSE")
-    # plt.title('Training loss (RMSE)')
+    # # plt.plot(history.history["loss"])
+    # # plt.xlabel('epoch')
+    # # plt.ylabel("RMSE")
+    # # plt.title('Training loss (RMSE)')
     return
 
 def analyzeTimeSeries(dataset, trainData, unscaledCarbonIntensity, dateTime):
@@ -236,34 +236,15 @@ def createFeatureViolinGraph(features, dataset, dateTime):
     plt.show()
     return
 
-def calcCarbonIntensity(sourceVal, energySource):
-    # both variables should have sources in the same order
-    carbonRate = {"coal":908, "nat_gas":440, "nuclear":15, "oil":890, "hydro":13.5, 
-                        "solar":50, "wind":22.5, "other":0}
-    carbonIntensity = 0
-    sum = 0
-    for val in sourceVal:
-        sum += val
-    idx=0
-    for idx in range(len(energySource)):
-        source = energySource[idx]
-        sourceContribFrac = sourceVal[idx]/sum
-        carbonIntensity += (sourceContribFrac * carbonRate[source])
-    return carbonIntensity
+def getMape(dates, actual, forecast):
+    avgDailyMape = []
+    mape = tf.keras.losses.MeanAbsolutePercentageError()
+    for i in range(0, len(actual), 24):
+        mapeTensor =  mape(actual[i:i+24], forecast[i:i+24])
+        mapeScore = mapeTensor.numpy()
+        print("Day: ", dates[i], "MAPE: ", mapeScore)
+        avgDailyMape.append(mapeScore)
 
-def calcCarbonIntensityFromForecasts(dataset):
-    carbonIntensity = [None]* len(dataset)
-    sourceForecasts = []
-    energySource = []
-    for col in dataset.columns:
-        if("forecast" in col):
-            sourceForecasts.append(dataset[col].values)
-            energySource.append(col[9:]) # removing "forecast_"
-            # sources are stored in the same order
-    sourceForecasts = np.array(sourceForecasts, dtype=np.float)
-    sourceForecasts = sourceForecasts.T
-    for i in range(24):
-        carbonIntensity[i] = dataset.iloc[i][0]
-    for i in range(24, len(dataset)):
-        carbonIntensity[i] = round(calcCarbonIntensity(sourceForecasts[i-24, :], energySource), 6)
-    return carbonIntensity
+    mapeTensor =  mape(actual, forecast)
+    mapeScore = mapeTensor.numpy()
+    return avgDailyMape, mapeScore
