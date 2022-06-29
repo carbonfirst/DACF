@@ -74,8 +74,8 @@ electricity produced by source i, when we are calculating day-ahead carbon inten
 <i>CR<sub>i</sub></i> = Median operational (direct) carbon emission rate (also known as carbon emission factor) of source i. <br><br>
 
 To calculate carbon intensity, run the following file:<br>
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ```python3 carbonIntensityCalculateor.py <region> <f/r> <num_sources>```<br>
-<b>Example:</b> ```python3 carbonIntensityCalculateor.py CISO r 8```<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ```python3 carbonIntensityCalculator.py <region> <f/r> <num_sources>```<br>
+<b>Example:</b> ```python3 carbonIntensityCalculator.py CISO r 8```<br>
 <b>Regions:</b> <i>CISO, PJM, ERCO, ISNE, SE, DE</i> <br>
 <b><i>f</i> :</b> forecast (based on source production forecasts), <b><i>r</i> :</b> real-time (based on historical electricity production data)<br>
 <b>No. of sources producting electricity:</b> <i>CISO: 8, PJM: 8, ERCO: 7, ISNE: 8, SE: 4, DE: 10</i> <br>
