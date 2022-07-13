@@ -105,7 +105,7 @@ def manipulateTestDataShape(data, slidingWindowLen, predictionWindowHours, isDat
 
 def trainANN(trainX, trainY, valX, valY, hyperParams):
     n_timesteps, n_features, nOutputs = trainX.shape[1], trainX.shape[2], trainY.shape[1]
-    epochs = hyperParams['epoch']
+    epochs = 1 #hyperParams['epoch']
     batchSize = hyperParams['batchsize']
     activationFunc = hyperParams['actv']
     lossFunc = hyperParams['loss']
@@ -140,6 +140,7 @@ def getDayAheadForecasts(trainX, trainY, model, history, testData,
     for i in range(0, len(testData)//24):
         dayAheadPredictions = list()
         tempHistory = history.copy()
+        currentDayHours = i* MODEL_SLIDING_WINDOW_LEN
         for j in range(0, PREDICTION_WINDOW_HOURS, 24):
             yhat_sequence, newTrainingData = getForecasts(model, tempHistory, trainWindowHours, numFeatures)
             dayAheadPredictions.extend(yhat_sequence)
@@ -152,7 +153,6 @@ def getDayAheadForecasts(trainX, trainY, model, history, testData,
             tempHistory.extend(latestHistory)
 
         # get real observation and add to history for predicting the next day
-        currentDayHours = i* MODEL_SLIDING_WINDOW_LEN
         history.extend(testData[currentDayHours:currentDayHours+MODEL_SLIDING_WINDOW_LEN, :].tolist())
         predictions.append(dayAheadPredictions)
 
