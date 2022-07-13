@@ -144,7 +144,9 @@ def getDayAheadForecasts(trainX, trainY, model, history, testData,
             yhat_sequence, newTrainingData = getForecasts(model, tempHistory, trainWindowHours, numFeatures)
             dayAheadPredictions.extend(yhat_sequence)
             # add current prediction to history for predicting the next day
-            latestHistory = testData[i+j:i+j+24, :].tolist()
+            # following 3 lines are redundant currently. Will become useful if
+            # prediction period goes beyond 24 hours.
+            latestHistory = testData[currentDayHours+j:currentDayHours+j+24, :].tolist()
             for k in range(24):
                 latestHistory[k][depVarColumn] = yhat_sequence[k]
             tempHistory.extend(latestHistory)
