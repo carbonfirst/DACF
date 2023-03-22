@@ -2,6 +2,8 @@
 DACF: Day-ahead Carbon Intensity Forecasting of Power Grids using Machine Learning. <br>
 (Refer <b><i>```DACF.pdf```</i></b> for the paper)
 
+We have built [CarbonCast](https://github.com/carbonfirst/CarbonCast), which is an extension of DACF. CarbonCast is more up-to-date and covers more regions. Please refer to that repo for further information.
+
 <b>Version:</b> 1.0 <br>
 <b>Authors:</b> Diptyaroop Maji, Ramesh K Sitaraman, Prashant Shenoy <br>
 <b>Affiliation:</b> University of Massachusetts, Amherst
